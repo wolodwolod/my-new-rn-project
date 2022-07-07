@@ -1,12 +1,45 @@
-import { StatusBar } from 'expo-status-bar';
+// import { StatusBar } from 'expo-status-bar';
+import React, { useState, useEffect } from "react";
 import { StyleSheet, Text, View } from 'react-native';
 
+// import * as Font from "expo-font";
+import { AppLoading } from "expo";
+
+// import LoginScreen from "./screens/auth/LoginScreen";
+import RegistrationScreen from "./screens/RegistrationScreen";
+
+// const loadApplication = async () => {
+//   await Font.loadAsync({
+//     "DMMono-Regular": require("./assets/fonts/DMMono-Regular.ttf"),
+//   });
+// };
+
 export default function App() {
+  
+const [iasReady, setIasReady] = useState(false);
+
+  // if (!iasReady) {
+  //   return (
+  //     <AppLoading
+  //       startAsync={loadApplication}
+  //       onFinish={() => setIasReady(true)}
+  //       onError={console.warn}
+  //     />
+  //   );
+  // }
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <>
+      {/* <LoginScreen /> */}
+      <RegistrationScreen />
+    </>
+  
+
+    
+    // <View style={styles.container}>
+    //   <Text>Open App!</Text>
+    //   <StatusBar style="auto" />
+    // </View>
   );
 }
 
