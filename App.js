@@ -5,7 +5,7 @@ import { StyleSheet, Text, View } from 'react-native';
 // import * as Font from "expo-font";
 import { AppLoading } from "expo";
 
-// import LoginScreen from "./screens/auth/LoginScreen";
+import LoginScreen from "./screens/LoginScreen";
 import RegistrationScreen from "./screens/RegistrationScreen";
 
 // const loadApplication = async () => {

@@ -33,11 +33,26 @@ export default function RegisterScreen() {
       const width = Dimensions.get("window").width;
       setDimensions(width);
     };
-    const listener = Dimensions.addEventListener("change", onChange);
+    const dimensionsListener = Dimensions.addEventListener("change", onChange);
     return () => {
-      listener.remove("change", onChange);
+        dimensionsListener.remove("change", onChange);
     };
   }, []);
+
+  useEffect(() => {
+    const showKeyboardListener = Keyboard.addListener("keyboardDidShow", () => {
+        setIsShowKeyboard(true);
+    });
+    const hideKeyboardListener = Keyboard.addListener("keyboardDidHide", () => {
+        setIsShowKeyboard(false);
+    });
+
+    return () => {
+        showKeyboardListener.remove();
+        hideKeyboardListener.remove();
+    };
+  }, []);
+
 
   const keyboardHide = () => {
     setIsShowKeyboard(false);
@@ -69,7 +84,7 @@ export default function RegisterScreen() {
                 marginTop: isShowKeyboard ? 60 : 60,
                 marginBottom: isShowKeyboard ? 30 : 30
               } }>
-                <Text style={styles.headerTitle}>Registration</Text>              
+                <Text style={styles.headerTitle}>Sign up</Text>              
               </View>
               <View>
                 {/* <Text style={styles.inputTitle}>NICKNAME</Text> */}
@@ -99,7 +114,7 @@ export default function RegisterScreen() {
                  placeholderTextColor={"#BDBDBD"}                
                 />
               </View>
-              <View style={{ marginTop: 20 }}>
+              <View style={{ marginTop: 20, marginBottom: isShowKeyboard ? 30 : 0 }}>
                 {/* <Text style={styles.inputTitle}>PASSWORD</Text> */}
                 <TextInput
                   style={styles.input}
@@ -114,24 +129,27 @@ export default function RegisterScreen() {
                   placeholderTextColor={"#BDBDBD"}      
                 />
               </View>
-              <View style={styles.btnWrapper}>
-              <TouchableOpacity
-                activeOpacity={0.8}
-                style={styles.firstBtn}
-                onPress={keyboardHide}
-              >
-                <Text style={styles.firstBtnTitle}>SIGN UP</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                activeOpacity={0.5}
-                style={styles.secondBtn}
-                onPress={keyboardHide}
-              >
-                  <Text
-                    style={styles.secondBtnTitle}>Have an account? Sign in</Text>
-                {/* <Text style={styles.btnTitle}></Text> */}
-              </TouchableOpacity>  
-              </View>
+              {!isShowKeyboard && (
+                <View style={styles.btnWrapper}>
+                  <TouchableOpacity
+                    activeOpacity={0.8}
+                    style={styles.firstBtn}
+                    onPress={keyboardHide}
+                  >
+                    <Text style={styles.firstBtnTitle}>SIGN UP</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    activeOpacity={0.5}
+                    style={styles.secondBtn}
+                    onPress={keyboardHide}
+                  >
+                    <Text style={styles.secondBtnTitle}>
+                      Have an account? Sign in
+                    </Text>
+                    {/* <Text style={styles.btnTitle}></Text> */}
+                  </TouchableOpacity>
+                </View>
+              )}
               
             </View>
           </KeyboardAvoidingView>
@@ -174,7 +192,9 @@ backgroundColor: "#F6F6F6",
   form: {
     // flex: 1,
     justifyContent: "flex-end",
-    backgroundColor: "#FFFFFF"
+    backgroundColor: "#FFFFFF",
+    borderTopLeftRadius: 25,
+    borderTopRightRadius: 25,
     // marginHorizontal: 40,
   },
   // inputTitle: {
