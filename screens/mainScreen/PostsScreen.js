@@ -1,7 +1,8 @@
 import React from "react"; // { useState, useEffect }
 import {
-  //   StyleSheet,
-  Text, View,
+  StyleSheet,
+  Text,
+  View,
   //   View,
   //   ImageBackground,
   //   TextInput,
@@ -13,13 +14,20 @@ import {
   //   Dimensions,
 } from "react-native";
 
-
 const PostsScreen = () => {
-    return (
-        <View>
-          <Text>Comments Screen</Text>  
-      </View>
+  return (
+    <View style={styles.container}>
+      <Text>Posts Screen</Text>
+    </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+});
 
 export default PostsScreen;

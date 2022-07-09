@@ -3,14 +3,11 @@ import React, { useState, useEffect } from "react";
 import { StyleSheet, Text, View } from "react-native";
 
 import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 import * as Font from "expo-font";
 import { AppLoading } from "expo";
 
-import LoginScreen from "./screens/auth/LoginScreen";
-import RegistrationScreen from "./screens/auth/RegistrationScreen";
+import { useRoute } from "./router";
 
 // const loadApplication = async () => {
 //   await
@@ -18,10 +15,9 @@ import RegistrationScreen from "./screens/auth/RegistrationScreen";
 //     "Roboto-Regular": require("./assets/fonts/Roboto-Regular.ttf"),
 //   });
 // };
-const AuthStack = createStackNavigator();
-const MainTab = createBottomTabNavigator();
 
 export default function App() {
+  const routing = useRoute({});
   // const [isReady, setIsReady] = useState(false);
 
   // if (!isReady) {
@@ -34,36 +30,7 @@ export default function App() {
   //   );
   // }
 
-  return (
-    <NavigationContainer>
-      <AuthStack.Navigator>
-        <AuthStack.Screen
-          name="Registration"
-          component={RegistrationScreen}
-          options={{
-            headerShown: false,
-          }}
-        />
-        <AuthStack.Screen
-          name="Login"
-          component={LoginScreen}
-          options={{
-            headerShown: false,
-          }}
-        />
-      </AuthStack.Navigator>
-    </NavigationContainer>
-
-    // <>
-    //   {/* <LoginScreen /> */}
-    //   <RegistrationScreen />
-    // </>
-
-    // <View style={styles.container}>
-    //   <Text>Open App!</Text>
-    //   <StatusBar style="auto" />
-    // </View>
-  );
+  return <NavigationContainer>{routing}</NavigationContainer>;
 }
 
 const styles = StyleSheet.create({

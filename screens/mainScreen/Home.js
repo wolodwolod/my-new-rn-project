@@ -1,8 +1,8 @@
 import React from "react"; // { useState, useEffect }
 import {
-  //   StyleSheet,
+  StyleSheet,
   Text,
-    View,
+  View,
   //   ImageBackground,
   //   TextInput,
   //   TouchableOpacity,
@@ -14,11 +14,19 @@ import {
 } from "react-native";
 
 const Home = () => {
-    return (
-        <View>
-          <Text>Comments Screen</Text>  
-      </View>
+  return (
+    <View style={styles.container}>
+      <Text>Home Screen</Text>
+    </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+});
 
 export default Home;
