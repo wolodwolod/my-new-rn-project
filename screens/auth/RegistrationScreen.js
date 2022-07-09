@@ -19,14 +19,12 @@ const initialState = {
   password: "",
 };
 
-export default function RegisterScreen() {
+export default function RegisterScreen({ navigation }) {
   console.log(Platform.OS);
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
   const [state, setState] = useState(initialState);
 
-  const [dimensions, setDimensions] = useState(
-    Dimensions.get("window").width
-  );
+  const [dimensions, setDimensions] = useState(Dimensions.get("window").width);
 
   useEffect(() => {
     const onChange = () => {
@@ -35,24 +33,23 @@ export default function RegisterScreen() {
     };
     const dimensionsListener = Dimensions.addEventListener("change", onChange);
     return () => {
-        dimensionsListener.remove("change", onChange);
+      dimensionsListener.remove("change", onChange);
     };
   }, []);
 
   useEffect(() => {
     const showKeyboardListener = Keyboard.addListener("keyboardDidShow", () => {
-        setIsShowKeyboard(true);
+      setIsShowKeyboard(true);
     });
     const hideKeyboardListener = Keyboard.addListener("keyboardDidHide", () => {
-        setIsShowKeyboard(false);
+      setIsShowKeyboard(false);
     });
 
     return () => {
-        showKeyboardListener.remove();
-        hideKeyboardListener.remove();
+      showKeyboardListener.remove();
+      hideKeyboardListener.remove();
     };
   }, []);
-
 
   const keyboardHide = () => {
     setIsShowKeyboard(false);
@@ -69,7 +66,7 @@ export default function RegisterScreen() {
           source={require("../assets/images/photo-bg.jpg")}
         >
           <KeyboardAvoidingView
-            // behavior={Platform.OS === "ios" ? "padding" : "height"}
+          // behavior={Platform.OS === "ios" ? "padding" : "height"}
           >
             <View
               style={{
@@ -78,13 +75,15 @@ export default function RegisterScreen() {
                 width: dimensions,
               }}
             >
-              <View style={{
-                ...styles.header,
+              <View
+                style={{
+                  ...styles.header,
 
-                marginTop: isShowKeyboard ? 60 : 60,
-                marginBottom: isShowKeyboard ? 30 : 30
-              } }>
-                <Text style={styles.headerTitle}>Sign up</Text>              
+                  marginTop: isShowKeyboard ? 60 : 60,
+                  marginBottom: isShowKeyboard ? 30 : 30,
+                }}
+              >
+                <Text style={styles.headerTitle}>Sign up</Text>
               </View>
               <View>
                 {/* <Text style={styles.inputTitle}>NICKNAME</Text> */}
@@ -110,11 +109,13 @@ export default function RegisterScreen() {
                   onChangeText={(value) =>
                     setState((prevState) => ({ ...prevState, email: value }))
                   }
-                 placeholder={"Email address"} 
-                 placeholderTextColor={"#BDBDBD"}                
+                  placeholder={"Email address"}
+                  placeholderTextColor={"#BDBDBD"}
                 />
               </View>
-              <View style={{ marginTop: 20, marginBottom: isShowKeyboard ? 30 : 0 }}>
+              <View
+                style={{ marginTop: 20, marginBottom: isShowKeyboard ? 30 : 0 }}
+              >
                 {/* <Text style={styles.inputTitle}>PASSWORD</Text> */}
                 <TextInput
                   style={styles.input}
@@ -126,7 +127,7 @@ export default function RegisterScreen() {
                     setState((prevState) => ({ ...prevState, password: value }))
                   }
                   placeholder={"Password"}
-                  placeholderTextColor={"#BDBDBD"}      
+                  placeholderTextColor={"#BDBDBD"}
                 />
               </View>
               {!isShowKeyboard && (
@@ -141,7 +142,7 @@ export default function RegisterScreen() {
                   <TouchableOpacity
                     activeOpacity={0.5}
                     style={styles.secondBtn}
-                    onPress={keyboardHide}
+                    onPress={() => navigation.navigate("Login")}
                   >
                     <Text style={styles.secondBtnTitle}>
                       Have an account? Sign in
@@ -150,7 +151,6 @@ export default function RegisterScreen() {
                   </TouchableOpacity>
                 </View>
               )}
-              
             </View>
           </KeyboardAvoidingView>
         </ImageBackground>
@@ -173,13 +173,11 @@ const styles = StyleSheet.create({
   },
   input: {
     minHeight: 50,
-    marginHorizontal: 16, 
-   paddingLeft: 16,
-backgroundColor: "#F6F6F6",
+    marginHorizontal: 16,
+    paddingLeft: 16,
+    backgroundColor: "#F6F6F6",
 
-
-// border: 1px solid #E8E8E8;
-
+    // border: 1px solid #E8E8E8;
 
     borderWidth: 1,
     borderColor: "#E8E8E8",
@@ -205,7 +203,7 @@ backgroundColor: "#F6F6F6",
   // },
   btnWrapper: {
     marginTop: 25,
-    marginBottom: 50
+    marginBottom: 50,
   },
   firstBtn: {
     borderRadius: 100,
@@ -213,10 +211,10 @@ backgroundColor: "#F6F6F6",
     minHeight: 50,
     marginTop: 16,
     justifyContent: "center",
-    alignItems: "center",   
+    alignItems: "center",
     marginHorizontal: 16,
     // color: "#FFFFFF",
-    
+
     ...Platform.select({
       ios: {
         backgroundColor: "transparent",
@@ -234,10 +232,10 @@ backgroundColor: "#F6F6F6",
     minHeight: 50,
     marginTop: 16,
     justifyContent: "center",
-    alignItems: "center",   
+    alignItems: "center",
     marginHorizontal: 16,
     // color: "#1B4371",
-    
+
     ...Platform.select({
       ios: {
         backgroundColor: "transparent",
@@ -252,26 +250,26 @@ backgroundColor: "#F6F6F6",
   firstBtnTitle: {
     color: Platform.OS === "ios" ? "#4169e1" : "#FFFFFF",
     fontSize: 16,
-    fontFamily: 'Roboto',
+    fontFamily: "Roboto",
   },
   secondBtnTitle: {
     color: Platform.OS === "ios" ? "#4169e1" : "#1B4371",
     fontSize: 16,
-    fontFamily: 'Roboto',
+    fontFamily: "Roboto",
   },
   header: {
     alignItems: "center",
     // marginBottom: 120,
   },
   headerTitle: {
-    fontFamily: 'Roboto',
-fontStyle: "normal",
-fontWeight: "500",
-fontSize: 30,
-lineHeight: 35,
-textAlign: "center",
-letterSpacing: 0.01,
+    fontFamily: "Roboto",
+    fontStyle: "normal",
+    // fontWeight: "500",
+    fontSize: 30,
+    lineHeight: 35,
+    textAlign: "center",
+    letterSpacing: 0.01,
 
-color: "#212121"
+    color: "#212121",
   },
 });

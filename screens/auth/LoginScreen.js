@@ -19,9 +19,9 @@ const initialState = {
   password: "",
 };
 
-export default function LoginScreen() {
+export default function LoginScreen({ navigation }) {
   console.log(Platform.OS);
-  const [isShowKeyboard, setIsShowKeyboard] = useState(false);  
+  const [isShowKeyboard, setIsShowKeyboard] = useState(false);
   const [state, setState] = useState(initialState);
 
   const [dimensions, setDimensions] = useState(Dimensions.get("window").width);
@@ -33,21 +33,21 @@ export default function LoginScreen() {
     };
     const dimensionsListener = Dimensions.addEventListener("change", onChange);
     return () => {
-        dimensionsListener.remove("change", onChange);
+      dimensionsListener.remove("change", onChange);
     };
   }, []);
 
   useEffect(() => {
     const showKeyboardListener = Keyboard.addListener("keyboardDidShow", () => {
-        setIsShowKeyboard(true);
+      setIsShowKeyboard(true);
     });
     const hideKeyboardListener = Keyboard.addListener("keyboardDidHide", () => {
-        setIsShowKeyboard(false);
+      setIsShowKeyboard(false);
     });
 
     return () => {
-        showKeyboardListener.remove();
-        hideKeyboardListener.remove();
+      showKeyboardListener.remove();
+      hideKeyboardListener.remove();
     };
   }, []);
 
@@ -82,7 +82,7 @@ export default function LoginScreen() {
                   marginBottom: isShowKeyboard ? 30 : 30,
                 }}
               >
-                <Text style={styles.headerTitle}>Sign in</Text>
+                <Text style={styles.headerTitle}>Log in</Text>
               </View>
 
               <View style={{ marginTop: 20 }}>
@@ -123,12 +123,12 @@ export default function LoginScreen() {
                     style={styles.firstBtn}
                     onPress={keyboardHide}
                   >
-                    <Text style={styles.firstBtnTitle}>SIGN IN</Text>
+                    <Text style={styles.firstBtnTitle}>LOG IN</Text>
                   </TouchableOpacity>
                   <TouchableOpacity
                     activeOpacity={0.5}
                     style={styles.secondBtn}
-                    onPress={keyboardHide}
+                    onPress={() => navigation.navigate("Registration")}
                   >
                     <Text style={styles.secondBtnTitle}>
                       Have not an account? Sign up
@@ -250,7 +250,7 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontFamily: "Roboto",
     fontStyle: "normal",
-    fontWeight: "500",
+    // fontWeight: "500",
     fontSize: 30,
     lineHeight: 35,
     textAlign: "center",
