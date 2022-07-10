@@ -36,11 +36,17 @@ export const useRoute = (isAuth) => {
     );
   }
   return (
-    <MainTab.Navigator tabBarOptions={{ showLabel: false }}>
+    <MainTab.Navigator
+      screenOptions={{
+        tabBarShowLabel: false,
+        headerShown: false,
+      }}
+      // tabBarOptions={{ showLabel: true }}
+    >
       <MainTab.Screen
         options={{
           tabBarIcon: ({ focused, size, color }) => (
-            <AntDesign name="appstore-o" size={30} color="black" />
+            <AntDesign name="appstore-o" size={24} color="black" />
           ),
         }}
         name="Posts"
@@ -49,7 +55,7 @@ export const useRoute = (isAuth) => {
       <MainTab.Screen
         options={{
           tabBarIcon: ({ focused, size, color }) => (
-            <AntDesign name="plussquareo" size={30} color="black" />
+            <AntDesign name="plussquareo" size={24} color="black" />
           ),
         }}
         name="Create"
