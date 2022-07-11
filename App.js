@@ -4,7 +4,7 @@ import { StyleSheet, Text, View } from "react-native";
 
 import { NavigationContainer } from "@react-navigation/native";
 
-import * as Font from "expo-font";
+// import * as Font from "expo-font";
 import { AppLoading } from "expo";
 
 import { useRoute } from "./router";
