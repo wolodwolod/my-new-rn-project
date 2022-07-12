@@ -43,7 +43,7 @@ const CreatePostsScreen = ({ navigation }) => {
   );
 
   const [location, setLocation] = useState(null);
-  const [errorMsg, setErrorMsg] = useState(null);
+  // const [errorMsg, setErrorMsg] = useState(null);
 
   useEffect(() => {
     const onChange = () => {
@@ -97,7 +97,7 @@ const CreatePostsScreen = ({ navigation }) => {
       const data = await camera.takePictureAsync();
       setPhoto(data.uri);
 
-      console.log("photo", data);
+      console.log("data", data);
       console.log("photo", data.uri);
       console.log("location", location);
 
@@ -106,7 +106,11 @@ const CreatePostsScreen = ({ navigation }) => {
   };
   const publishPost = async () => {
     console.log("navigation", navigation);
-    navigation.navigate("Posts", { photo });
+    navigation.navigate("DefaultScreen", { photo });
+    setPhoto(null);
+  };
+
+  const takePhotoAgain = async () => {
     setPhoto(null);
   };
 
@@ -134,29 +138,37 @@ const CreatePostsScreen = ({ navigation }) => {
           style={styles.image}
           source={require("../../assets/images/photo-bg.jpg")}
         >
-          {!isShowKeyboard && isFocused && (
-            <Camera
-              style={styles.camera}
-              type={type}
-              ref={(ref) => {
-                setCamera(ref);
-              }}
-            >
-              {photo && (
-                <View style={styles.takePhotoContainer}>
-                  <Image
-                    source={{ uri: photo }}
-                    style={{ height: 200, width: 200 }}
-                  />
-                </View>
-              )}
-              <TouchableOpacity onPress={takePhoto} style={styles.snapBtn}>
-                <Text style={styles.snap}>SNAP</Text>
+          {!photo && !isShowKeyboard && (
+            <View style={styles.preview}>
+              <Camera
+                style={styles.camera}
+                type={type}
+                ref={(ref) => {
+                  setCamera(ref);
+                }}
+              >
+                <TouchableOpacity onPress={takePhoto} style={styles.snapBtn}>
+                  <Text style={styles.snap}>SNAP</Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={changeType} style={styles.turnBtn}>
+                  <Text style={styles.snap}>TURN</Text>
+                </TouchableOpacity>
+              </Camera>
+            </View>
+          )}
+          {photo && !isShowKeyboard && (
+            <View style={styles.takePhotoContainer}>
+              <Image
+                source={{ uri: photo }}
+                style={{ height: 250, width: 250, borderRadius: 10 }}
+              />
+              <TouchableOpacity
+                onPress={takePhotoAgain}
+                style={styles.snapAgainBtn}
+              >
+                <Text style={styles.snap}>SNAP AGAIN</Text>
               </TouchableOpacity>
-              <TouchableOpacity onPress={changeType} style={styles.turnBtn}>
-                <Text style={styles.snap}>TURN</Text>
-              </TouchableOpacity>
-            </Camera>
+            </View>
           )}
           <KeyboardAvoidingView
           // behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -226,18 +238,11 @@ const styles = StyleSheet.create({
     resizeMode: "cover",
     justifyContent: "space-around",
     alignItems: "center",
+    borderRadius: 10,
   },
-  // cameraWrapper: {
-  //   height: 300,
-  //   marginTop: 50,
-  //   marginHorizontal: 16,
-  //   borderWidth: 1,
-  //   borderColor: "#ff0000",
-  //   borderRadius: 30,
-  //   marginHorizontal: 16,
-  //   marginTop: 50,
-  //   // borderTopLeftRadius: 25,
-  // },
+  preview: {
+    borderRadius: 10,
+  },
   camera: {
     // flex: 1,
     maxHeight: 300,
@@ -253,6 +258,7 @@ const styles = StyleSheet.create({
   },
   snap: {
     color: "#fff",
+    marginHorizontal: 5,
   },
   snapBtn: {
     marginTop: 100,
@@ -263,6 +269,17 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     justifyContent: "center",
     alignItems: "center",
+  },
+  snapAgainBtn: {
+    // marginTop: 100,
+    borderWidth: 1,
+    borderColor: "#ff0000",
+    // width: 70,
+    height: 70,
+    borderRadius: 20,
+    justifyContent: "center",
+    alignItems: "center",
+    position: "absolute",
   },
   turnBtn: {
     marginTop: 40,
@@ -275,11 +292,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   takePhotoContainer: {
-    position: "absolute",
-    top: 50,
-    left: 10,
+    // position: "absolute",
+    marginTop: 50,
+    // left: 10,
     borderColor: "#fff",
     borderWidth: 1,
+    borderRadius: 10,
+    alignItems: "center",
+    justifyContent: "flex-end",
   },
   input: {
     minHeight: 50,

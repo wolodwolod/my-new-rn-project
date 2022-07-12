@@ -6,9 +6,9 @@ const MainTab = createBottomTabNavigator();
 
 import LoginScreen from "./screens/auth/LoginScreen";
 import RegistrationScreen from "./screens/auth/RegistrationScreen";
-import PostsScreen from "./screens/mainScreen/PostsScreen";
-import CreatePostsScreen from "./screens/mainScreen/CreatePostsScreen";
-import ProfileScreen from "./screens/mainScreen/ProfileScreen";
+import PostsScreen from "./screens/mainScreens/PostsScreen";
+import CreatePostsScreen from "./screens/mainScreens/CreatePostsScreen";
+import ProfileScreen from "./screens/mainScreens/ProfileScreen";
 
 import { AntDesign } from "@expo/vector-icons";
 // import { MaterialCommunityIcons } from "@expo/vector-icons";

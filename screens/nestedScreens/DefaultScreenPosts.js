@@ -1,21 +1,14 @@
 import React, { useState, useEffect } from "react";
 import {
-  StyleSheet,
-  Text,
   View,
+  StyleSheet,
   FlatList,
   Image,
-  //   ImageBackground,
-  //   TextInput,
-  //   TouchableOpacity,
-  //   Platform,
-  //   KeyboardAvoidingView,
-  //   Keyboard,
-  //   TouchableWithoutFeedback,
+  Button,
   Dimensions,
 } from "react-native";
 
-const PostsScreen = ({ route }) => {
+const DefaultScreenPosts = ({ route, navigation }) => {
   const [posts, setPosts] = useState([]);
   const [dimensions, setDimensions] = useState(
     Dimensions.get("window").width - 16 * 2
@@ -69,6 +62,16 @@ const PostsScreen = ({ route }) => {
           </View>
         )}
       />
+      <Button
+        style={{ marginBottom: 10 }}
+        title="go to Map"
+        onPress={() => navigation.navigate("Map")}
+      />
+      <Button
+        style={styles.btn}
+        title="go to Comments"
+        onPress={() => navigation.navigate("Comments")}
+      />
     </View>
   );
 };
@@ -77,8 +80,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
-    alignItems: "center",
+  },
+  btn: {
+    marginTop: 10,
   },
 });
 
-export default PostsScreen;
+export default DefaultScreenPosts;
