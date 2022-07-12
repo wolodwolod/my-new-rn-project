@@ -19,6 +19,7 @@ import { useIsFocused } from "@react-navigation/native";
 
 import { Camera, CameraType } from "expo-camera";
 import * as MediaLibrary from "expo-media-library";
+import * as Location from "expo-location";
 // import { TouchableOpacity } from "react-native-gesture-handler";
 
 const initialState = {
@@ -40,6 +41,9 @@ const CreatePostsScreen = ({ navigation }) => {
   const [dimensions, setDimensions] = useState(
     Dimensions.get("window").width - 16 * 2
   );
+
+  const [location, setLocation] = useState(null);
+  const [errorMsg, setErrorMsg] = useState(null);
 
   useEffect(() => {
     const onChange = () => {
@@ -75,6 +79,19 @@ const CreatePostsScreen = ({ navigation }) => {
     };
   }, []);
 
+  useEffect(() => {
+    (async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        setErrorMsg("Permission to access location was denied");
+        return;
+      }
+
+      let location = await Location.getCurrentPositionAsync({});
+      setLocation(location);
+    })();
+  }, []);
+
   const takePhoto = async () => {
     if (camera) {
       const data = await camera.takePictureAsync();
@@ -82,6 +99,7 @@ const CreatePostsScreen = ({ navigation }) => {
 
       console.log("photo", data);
       console.log("photo", data.uri);
+      console.log("location", location);
 
       await MediaLibrary.createAssetAsync(data.uri);
     }
@@ -90,7 +108,6 @@ const CreatePostsScreen = ({ navigation }) => {
     console.log("navigation", navigation);
     navigation.navigate("Posts", { photo });
     setPhoto(null);
-    // location.reload();
   };
 
   const changeType = () => {
