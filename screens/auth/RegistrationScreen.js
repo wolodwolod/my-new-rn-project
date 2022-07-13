@@ -13,6 +13,10 @@ import {
   Dimensions,
 } from "react-native";
 
+import { useDispatch } from "react-redux";
+
+import { authSignUpUser } from "../../redux/auth/authOperatoins";
+
 const initialState = {
   login: "",
   email: "",
@@ -25,6 +29,8 @@ export default function RegisterScreen({ navigation }) {
   const [state, setState] = useState(initialState);
 
   const [dimensions, setDimensions] = useState(Dimensions.get("window").width);
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const onChange = () => {
@@ -55,6 +61,14 @@ export default function RegisterScreen({ navigation }) {
     setIsShowKeyboard(false);
     Keyboard.dismiss();
     console.log(state);
+    setState(initialState);
+  };
+
+  const handleSubmit = () => {
+    setIsShowKeyboard(false);
+    Keyboard.dismiss();
+    console.log(state);
+    dispatch(authSignUpUser(state));
     setState(initialState);
   };
 
@@ -135,7 +149,7 @@ export default function RegisterScreen({ navigation }) {
                   <TouchableOpacity
                     activeOpacity={0.8}
                     style={styles.firstBtn}
-                    onPress={keyboardHide}
+                    onPress={handleSubmit}
                   >
                     <Text style={styles.firstBtnTitle}>SIGN UP</Text>
                   </TouchableOpacity>

@@ -29,7 +29,7 @@ export const useRoute = (isAuth) => {
           options={{
             headerShown: true,
           }}
-          name="Register"
+          name="Registration"
           component={RegistrationScreen}
         />
       </AuthStack.Navigator>

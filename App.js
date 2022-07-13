@@ -7,7 +7,10 @@ import { NavigationContainer } from "@react-navigation/native";
 // import * as Font from "expo-font";
 import { AppLoading } from "expo";
 
+import { Provider } from "react-redux";
+
 import { useRoute } from "./router";
+import { store } from "./redux/store";
 
 // const loadApplication = async () => {
 //   await
@@ -17,7 +20,7 @@ import { useRoute } from "./router";
 // };
 
 export default function App() {
-  const routing = useRoute({});
+  const routing = useRoute(false);
   // const [isReady, setIsReady] = useState(false);
 
   // if (!isReady) {
@@ -30,7 +33,11 @@ export default function App() {
   //   );
   // }
 
-  return <NavigationContainer>{routing}</NavigationContainer>;
+  return (
+    <Provider store={store}>
+      <NavigationContainer>{routing}</NavigationContainer>
+    </Provider>
+  );
 }
 
 const styles = StyleSheet.create({
