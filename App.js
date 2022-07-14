@@ -1,19 +1,14 @@
 // import { StatusBar } from 'expo-status-bar';
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
-
-import { NavigationContainer } from "@react-navigation/native";
 
 // import * as Font from "expo-font";
 import { AppLoading } from "expo";
 
 import { Provider } from "react-redux";
 
-import { useRoute } from "./router";
 import { store } from "./redux/store";
-
-import app from "./firebase/config";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
+import Main from "./components/Main";
 
 // const loadApplication = async () => {
 //   await
@@ -24,26 +19,6 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 export default function App() {
   // const [isReady, setIsReady] = useState(false);
-  const [user, setUser] = useState(null);
-
-  const auth = getAuth();
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      console.log("user change", user);
-      setUser(user);
-      // User is signed in, see docs for a list of available properties
-      // https://firebase.google.com/docs/reference/js/firebase.User
-      const uid = user.uid;
-      // ...
-    } else {
-      console.log("no user");
-      setUser(null);
-      // User is signed out
-      // ...
-    }
-  });
-
-  const routing = useRoute(user);
 
   // if (!isReady) {
   //   return (
@@ -57,7 +32,7 @@ export default function App() {
 
   return (
     <Provider store={store}>
-      <NavigationContainer>{routing}</NavigationContainer>
+      <Main />
     </Provider>
   );
 }
