@@ -12,6 +12,9 @@ import { Provider } from "react-redux";
 import { useRoute } from "./router";
 import { store } from "./redux/store";
 
+import app from "./firebase/config";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+
 // const loadApplication = async () => {
 //   await
 //   Font.loadAsync({
@@ -20,8 +23,27 @@ import { store } from "./redux/store";
 // };
 
 export default function App() {
-  const routing = useRoute(false);
   // const [isReady, setIsReady] = useState(false);
+  const [user, setUser] = useState(null);
+
+  const auth = getAuth();
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      console.log("user change", user);
+      setUser(user);
+      // User is signed in, see docs for a list of available properties
+      // https://firebase.google.com/docs/reference/js/firebase.User
+      const uid = user.uid;
+      // ...
+    } else {
+      console.log("no user");
+      setUser(null);
+      // User is signed out
+      // ...
+    }
+  });
+
+  const routing = useRoute(user);
 
   // if (!isReady) {
   //   return (

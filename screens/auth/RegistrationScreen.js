@@ -60,14 +60,13 @@ export default function RegisterScreen({ navigation }) {
   const keyboardHide = () => {
     setIsShowKeyboard(false);
     Keyboard.dismiss();
-    console.log(state);
-    setState(initialState);
+    // setState(initialState);
   };
 
   const handleSubmit = () => {
     setIsShowKeyboard(false);
     Keyboard.dismiss();
-    console.log(state);
+    console.log("submitSignUp", state);
     dispatch(authSignUpUser(state));
     setState(initialState);
   };

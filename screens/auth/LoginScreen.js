@@ -13,17 +13,23 @@ import {
   Dimensions,
 } from "react-native";
 
+import { useDispatch } from "react-redux";
+
+import { authSignInUser } from "../../redux/auth/authOperatoins";
+
 const initialState = {
   email: "",
   password: "",
 };
 
 export default function LoginScreen({ navigation }) {
-  console.log(Platform.OS);
+  // console.log(Platform.OS);
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
   const [state, setState] = useState(initialState);
 
   const [dimensions, setDimensions] = useState(Dimensions.get("window").width);
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const onChange = () => {
@@ -53,7 +59,14 @@ export default function LoginScreen({ navigation }) {
   const keyboardHide = () => {
     setIsShowKeyboard(false);
     Keyboard.dismiss();
-    console.log(state);
+    // setState(initialState);
+  };
+
+  const handleSubmit = () => {
+    setIsShowKeyboard(false);
+    Keyboard.dismiss();
+    console.log("submitLogIn", state);
+    dispatch(authSignInUser(state));
     setState(initialState);
   };
 
@@ -120,7 +133,7 @@ export default function LoginScreen({ navigation }) {
                   <TouchableOpacity
                     activeOpacity={0.8}
                     style={styles.firstBtn}
-                    onPress={keyboardHide}
+                    onPress={handleSubmit}
                   >
                     <Text style={styles.firstBtnTitle}>LOG IN</Text>
                   </TouchableOpacity>
