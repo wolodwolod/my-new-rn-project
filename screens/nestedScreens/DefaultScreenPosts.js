@@ -10,7 +10,7 @@ import {
 } from "react-native";
 
 import { db } from "../../firebase/config";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, onSnapshot } from "firebase/firestore";
 
 const DefaultScreenPosts = ({ route, navigation }) => {
   const [posts, setPosts] = useState([]);
@@ -36,15 +36,16 @@ const DefaultScreenPosts = ({ route, navigation }) => {
   }, []);
 
   const getAllPosts = async () => {
-    const querySnapshot = await getDocs(collection(db, "posts"));
+    onSnapshot(collection(db, "posts"), (data) => {
+      setPosts(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+    });
 
-    const allPosts = querySnapshot.docs.map((doc) => ({
-      ...doc.data(),
-      id: doc.id,
-    }));
-    setPosts(allPosts);
-    // console.log("allPosts", allPosts);
+    // const allPosts = querySnapshot.docs.map((doc) => ({
+    //   ...doc.data(),
+    //   id: doc.id,
   };
+  // setPosts(allPosts);
+  // console.log("allPosts", allPosts);
 
   return (
     <View style={styles.container}>
