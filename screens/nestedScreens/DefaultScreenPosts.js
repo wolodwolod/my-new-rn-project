@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import {
   View,
+  Text,
   StyleSheet,
   FlatList,
   Image,
@@ -8,13 +9,16 @@ import {
   Dimensions,
 } from "react-native";
 
+import { db } from "../../firebase/config";
+import { collection, getDocs } from "firebase/firestore";
+
 const DefaultScreenPosts = ({ route, navigation }) => {
   const [posts, setPosts] = useState([]);
   const [dimensions, setDimensions] = useState(
     Dimensions.get("window").width - 16 * 2
   );
 
-  console.log("route.params", route.params);
+  // console.log("route.params", route.params);
 
   useEffect(() => {
     const onChange = () => {
@@ -28,12 +32,19 @@ const DefaultScreenPosts = ({ route, navigation }) => {
   }, []);
 
   useEffect(() => {
-    if (route.params) {
-      setPosts((prevState) => [...prevState, route.params]);
-    }
-  }, [route.params]);
+    getAllPosts();
+  }, []);
 
-  console.log("posts", posts);
+  const getAllPosts = async () => {
+    const querySnapshot = await getDocs(collection(db, "posts"));
+
+    const allPosts = querySnapshot.docs.map((doc) => ({
+      ...doc.data(),
+      id: doc.id,
+    }));
+    setPosts(allPosts);
+    // console.log("allPosts", allPosts);
+  };
 
   return (
     <View style={styles.container}>
@@ -49,7 +60,6 @@ const DefaultScreenPosts = ({ route, navigation }) => {
               marginTop: 10,
               justifyContent: "center",
               alignItems: "center",
-              marginHorizontal: 16,
             }}
           >
             <Image
@@ -59,10 +69,30 @@ const DefaultScreenPosts = ({ route, navigation }) => {
                 height: dimensions / 1.5,
               }}
             />
+            <View>
+              <Text>{item.title}</Text>
+            </View>
+            <View>
+              <Button
+                title="go to map"
+                onPress={() =>
+                  navigation.navigate("Map", {
+                    location: item.location,
+                    title: item.title,
+                  })
+                }
+              />
+              <Button
+                title="go to Comments"
+                onPress={() =>
+                  navigation.navigate("Comments", { postId: item.id })
+                }
+              />
+            </View>
           </View>
         )}
       />
-      <Button
+      {/* <Button
         style={{ marginBottom: 10 }}
         title="go to Map"
         onPress={() => navigation.navigate("Map")}
@@ -71,7 +101,7 @@ const DefaultScreenPosts = ({ route, navigation }) => {
         style={styles.btn}
         title="go to Comments"
         onPress={() => navigation.navigate("Comments")}
-      />
+      /> */}
     </View>
   );
 };
@@ -80,6 +110,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
+    marginHorizontal: 16,
   },
   btn: {
     marginTop: 10,
@@ -87,3 +118,8 @@ const styles = StyleSheet.create({
 });
 
 export default DefaultScreenPosts;
+
+// await navigation.navigate("Posts", {
+//   screen: "DefaultScreen",
+//   params: { photo },
+// });

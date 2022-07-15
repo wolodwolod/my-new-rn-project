@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import {
   StyleSheet,
   Text,
@@ -20,6 +21,15 @@ import { useIsFocused } from "@react-navigation/native";
 import { Camera, CameraType } from "expo-camera";
 import * as MediaLibrary from "expo-media-library";
 import * as Location from "expo-location";
+
+import {
+  ref,
+  uploadBytes,
+  // uploadString,
+  getDownloadURL,
+} from "firebase/storage";
+import { storage, db } from "../../firebase/config";
+import { collection, addDoc } from "firebase/firestore";
 // import { TouchableOpacity } from "react-native-gesture-handler";
 
 const initialState = {
@@ -44,6 +54,8 @@ const CreatePostsScreen = ({ navigation }) => {
 
   const [location, setLocation] = useState(null);
   // const [errorMsg, setErrorMsg] = useState(null);
+
+  const { userId, login } = useSelector((state) => state.auth);
 
   useEffect(() => {
     const onChange = () => {
@@ -97,17 +109,54 @@ const CreatePostsScreen = ({ navigation }) => {
       const data = await camera.takePictureAsync();
       setPhoto(data.uri);
 
-      console.log("data", data);
+      console.log("dataTakePhoto", data);
       console.log("photo", data.uri);
       console.log("location", location);
 
       await MediaLibrary.createAssetAsync(data.uri);
     }
   };
-  const publishPost = async () => {
-    console.log("navigation", navigation);
-    navigation.navigate("DefaultScreen", { photo });
+
+  const uploadPhotoToServer = async () => {
+    try {
+      const photoResponse = await fetch(photo);
+      const photoFile = await photoResponse.blob();
+      const uniquePostId = Date.now().toString();
+
+      const postImagesRef = ref(storage, `postImages/${uniquePostId}`);
+
+      const snapshot = await uploadBytes(postImagesRef, photoFile);
+      console.log("snapshot", snapshot);
+
+      const downloadPhoto = await getDownloadURL(postImagesRef);
+      console.log("downloadPhoto", downloadPhoto);
+      return downloadPhoto;
+    } catch (error) {
+      console.log("error", error);
+      console.log("error.message", error.message);
+    }
+  };
+
+  const uploadPostToServer = async () => {
+    const photo = await uploadPhotoToServer();
+    const createPost = await addDoc(collection(db, "posts"), {
+      photo,
+      title: state.title,
+      location: location.coords,
+      userId,
+      login,
+    });
+    // console.log("createPost", createPost);
+  };
+
+  const publishPost = () => {
+    uploadPostToServer();
+    setTimeout(() => {
+      navigation.navigate("Posts");
+    }, 500);
+
     setPhoto(null);
+    setState(initialState);
   };
 
   const takePhotoAgain = async () => {
@@ -129,7 +178,7 @@ const CreatePostsScreen = ({ navigation }) => {
     setState(initialState);
   };
 
-  const isFocused = useIsFocused();
+  // const isFocused = useIsFocused();
 
   return (
     <TouchableWithoutFeedback onPress={keyboardHide}>
