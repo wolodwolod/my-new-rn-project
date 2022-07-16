@@ -151,9 +151,7 @@ const CreatePostsScreen = ({ navigation }) => {
 
   const publishPost = () => {
     uploadPostToServer();
-    setTimeout(() => {
-      navigation.navigate("Posts");
-    }, 500);
+    navigation.navigate("Posts");
 
     setPhoto(null);
     setState(initialState);
@@ -174,7 +172,7 @@ const CreatePostsScreen = ({ navigation }) => {
   const keyboardHide = () => {
     setIsShowKeyboard(false);
     Keyboard.dismiss();
-    console.log(state);
+    // console.log(state);
     setState(initialState);
   };
 

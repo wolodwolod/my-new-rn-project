@@ -7,9 +7,16 @@ import {
   TouchableOpacity,
   SafeAreaView,
   FlatList,
+  Keyboard,
 } from "react-native";
 import { useSelector } from "react-redux";
-import { collection, addDoc, doc, getDocs } from "firebase/firestore";
+import {
+  collection,
+  addDoc,
+  doc,
+  getDocs,
+  onSnapshot,
+} from "firebase/firestore";
 import { db } from "../../firebase/config";
 
 const CommentsScreen = ({ route }) => {
@@ -18,6 +25,7 @@ const CommentsScreen = ({ route }) => {
 
   const [comment, setComment] = useState("");
   const [allComments, setAllComments] = useState([]);
+  const [isShowKeyboard, setIsShowKeyboard] = useState(false);
   const { login } = useSelector((state) => state.auth);
 
   const postRef = doc(db, "posts", postId);
@@ -31,16 +39,27 @@ const CommentsScreen = ({ route }) => {
       comment,
       login,
     });
+    keyboardHide();
   };
 
   const getAllComments = async () => {
-    const querySnapshot = await getDocs(collection(postRef, "comments"));
-    const allPostComments = querySnapshot.docs.map((doc) => ({
-      ...doc.data(),
-      id: doc.id,
-    }));
-    setAllComments(allPostComments);
-    console.log("allComments", allComments);
+    onSnapshot(collection(postRef, "comments"), (data) => {
+      setAllComments(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+    });
+    // const querySnapshot = await getDocs(collection(postRef, "comments"));
+    // const allPostComments = querySnapshot.docs.map((doc) => ({
+    //   ...doc.data(),
+    //   id: doc.id,
+    // }));
+
+    // setAllComments(allPostComments);
+    // console.log("allComments", allComments);
+  };
+
+  const keyboardHide = () => {
+    setIsShowKeyboard(false);
+    Keyboard.dismiss();
+    setComment("");
   };
 
   return (
@@ -58,7 +77,12 @@ const CommentsScreen = ({ route }) => {
         />
       </SafeAreaView>
       <View style={styles.inputContainer}>
-        <TextInput style={styles.input} onChangeText={setComment} />
+        <TextInput
+          style={styles.input}
+          onFocus={() => setIsShowKeyboard(true)}
+          value={comment}
+          onChangeText={setComment}
+        />
       </View>
       <TouchableOpacity onPress={createComment} style={styles.sendBtn}>
         <Text style={styles.sendLabel}>add comment</Text>
