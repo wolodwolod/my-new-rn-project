@@ -49,6 +49,9 @@ const DefaultScreenPosts = ({ route, navigation }) => {
 
   return (
     <View style={styles.container}>
+      {/* <View>
+        <Text style={{ color: "black" }}>ALL POSTS</Text>
+      </View> */}
       <FlatList
         style={{
           marginTop: 20,
@@ -112,6 +115,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     marginHorizontal: 16,
+    // marginTop: 25,
   },
   btn: {
     marginTop: 10,

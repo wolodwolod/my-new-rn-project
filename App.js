@@ -1,9 +1,10 @@
 // import { StatusBar } from 'expo-status-bar';
-import React, { useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
+// import React, { useState } from "react";
+import { StyleSheet } from "react-native";
+import { useFonts } from "expo-font";
 
 // import * as Font from "expo-font";
-import { AppLoading } from "expo";
+// import AppLoading from "expo-app-loading";
 
 import { Provider } from "react-redux";
 
@@ -11,8 +12,7 @@ import { store } from "./redux/store";
 import Main from "./components/Main";
 
 // const loadApplication = async () => {
-//   await
-//   Font.loadAsync({
+//   await Font.loadAsync({
 //     "Roboto-Regular": require("./assets/fonts/Roboto-Regular.ttf"),
 //   });
 // };
@@ -29,6 +29,15 @@ export default function App() {
   //     />
   //   );
   // }
+
+  const [loaded] = useFonts({
+    "Roboto-Regular": require("./assets/fonts/Roboto-Regular.ttf"),
+  });
+  console.log("loaded", loaded);
+
+  if (!loaded) {
+    return null;
+  }
 
   return (
     <Provider store={store}>

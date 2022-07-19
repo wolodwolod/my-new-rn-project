@@ -263,19 +263,19 @@ const styles = StyleSheet.create({
   firstBtnTitle: {
     color: Platform.OS === "ios" ? "#4169e1" : "#FFFFFF",
     fontSize: 16,
-    fontFamily: "Roboto",
+    fontFamily: "Roboto-Regular",
   },
   secondBtnTitle: {
     color: Platform.OS === "ios" ? "#4169e1" : "#1B4371",
     fontSize: 16,
-    fontFamily: "Roboto",
+    fontFamily: "Roboto-Regular",
   },
   header: {
     alignItems: "center",
     // marginBottom: 120,
   },
   headerTitle: {
-    fontFamily: "Roboto",
+    fontFamily: "Roboto-Regular",
     fontStyle: "normal",
     // fontWeight: "500",
     fontSize: 30,

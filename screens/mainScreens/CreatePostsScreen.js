@@ -21,6 +21,7 @@ import { useIsFocused } from "@react-navigation/native";
 import { Camera, CameraType } from "expo-camera";
 import * as MediaLibrary from "expo-media-library";
 import * as Location from "expo-location";
+import { manipulateAsync, FlipType, SaveFormat } from "expo-image-manipulator";
 
 import {
   ref,
@@ -107,7 +108,10 @@ const CreatePostsScreen = ({ navigation }) => {
   const takePhoto = async () => {
     if (camera) {
       const data = await camera.takePictureAsync();
-      setPhoto(data.uri);
+      const manipResult = await manipulateAsync(data.uri, [], {
+        compress: 0.5,
+      });
+      setPhoto(manipResult.uri);
 
       console.log("dataTakePhoto", data);
       console.log("photo", data.uri);
@@ -120,16 +124,18 @@ const CreatePostsScreen = ({ navigation }) => {
   const uploadPhotoToServer = async () => {
     try {
       const photoResponse = await fetch(photo);
+
       const photoFile = await photoResponse.blob();
       const uniquePostId = Date.now().toString();
 
       const postImagesRef = ref(storage, `postImages/${uniquePostId}`);
 
       const snapshot = await uploadBytes(postImagesRef, photoFile);
-      console.log("snapshot", snapshot);
+      // console.log("snapshot", snapshot);
 
       const downloadPhoto = await getDownloadURL(postImagesRef);
       console.log("downloadPhoto", downloadPhoto);
+      // console.log("photoResponse", photoResponse);
       return downloadPhoto;
     } catch (error) {
       console.log("error", error);
