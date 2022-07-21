@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "my-new-rn-project",
-    "slug": "my-new-rn-project",
+    "name": "social_posts-rn-project",
+    "slug": "social_posts-rn-project",
     "version": "1.0.0",
     "orientation": "default",
     "icon": "./assets/icon.png",
@@ -28,6 +28,7 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "description": ""
   }
 }

@@ -182,7 +182,7 @@ const CreatePostsScreen = ({ navigation }) => {
     setState(initialState);
   };
 
-  // const isFocused = useIsFocused();
+  const isFocused = useIsFocused();
 
   return (
     <TouchableWithoutFeedback onPress={keyboardHide}>
@@ -191,7 +191,7 @@ const CreatePostsScreen = ({ navigation }) => {
           style={styles.image}
           source={require("../../assets/images/photo-bg.jpg")}
         >
-          {!photo && !isShowKeyboard && (
+          {!photo && !isShowKeyboard && isFocused && (
             <View style={styles.preview}>
               <Camera
                 style={styles.camera}
